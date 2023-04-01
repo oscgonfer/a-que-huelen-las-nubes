@@ -6,7 +6,7 @@ import sys
 async def main():
   server = Server(port=8000)
   serial = Serial(
-    #port = "/dev/cu.usbmodem142111101",
+    port = "/dev/cu.usbmodem142111101",
     #port = "/dev/cu.usbmodem14201",
     port="DEMO",
     baudrate = 9600,

@@ -11,7 +11,7 @@ class Server(object):
   async def _transmit(self):
     while True:
       message = await self.from_serial.get()
-      websockets.broadcast(self.connections, message)
+      websockets.broadcast(self.connections, "LOG" + message)
       self.from_serial.task_done()
   async def _listen(self, socket: Socket):
     async for message in socket:
