@@ -6,14 +6,15 @@ import sys
 class Demo(object):
   def __init__(self):
     self.count = 150
-  def readline(self):
-    self.count += random.randint(-int(self.count), 255-int(self.count)) / 10.
-    time.sleep(0.1)
-    if random.random() < 0.1:
-        return "FIB" + f"Rare B message at count {int(self.count)}"
-    return f"FIA{int(self.count)}"
-  #def readline(self) -> str:
-  #  return input()
+    self.in_waiting = 1
+  #def readline(self):
+  #  self.count += random.randint(-int(self.count), 255-int(self.count)) / 10.
+  #  time.sleep(0.1)
+  #  if random.random() < 0.1:
+  #      return "FIB" + f"Rare B message at count {int(self.count)}"
+  #  return f"FIA{int(self.count)}"
+  def readline(self) -> str:
+    return input().encode('utf-8')
   def write(self, data):
     if data[:3] == "LOG":
         print(f"DEMO Log: {data[3:]}")
@@ -26,6 +27,8 @@ class Demo(object):
         sys.exit(0)
     else:
         print(f"Warning: got invalid data '{data}'")
+  def __enter__(self): return self
+  def __exit__(self): pass
 
 class Serial(object):
   def __init__(self, port, baudrate, to_serial: asyncio.Queue, from_serial: asyncio.Queue, timeout=1):
@@ -42,7 +45,7 @@ class Serial(object):
   async def listen(self):
     while True:
       message = await asyncio.get_event_loop().run_in_executor(None, self._readline_blocking)
-      print(f"Got: {message}")
+      #print(f"Got: {message}")
       await self.from_serial.put(message)
   async def relay(self):
     while True:
