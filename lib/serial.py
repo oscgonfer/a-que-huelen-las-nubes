@@ -30,7 +30,7 @@ class Serial(object):
         while True:
             message = await asyncio.get_event_loop().run_in_executor(None, self._readline_blocking)
             #print(f"Got: {message}")
-            await self.from_serial.put("LOG" + message)
+            await self.from_serial.put(message)
             if self.recording:
                 self.recorded_data.append(message)
                 if len(self.recorded_data) > self.recording_buffer_size:
