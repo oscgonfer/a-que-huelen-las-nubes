@@ -67,7 +67,7 @@ class Serial(object):
             if not self.recording:
                 await self.from_serial.put("ERRNo in-progress recording to stop")
             else:
-                print(f"Ending recording: {self.filename}")
+                print(f"End recording: {self.filename}")
                 self.end_recording()
             await self.from_serial.put("SERREC_OFF")
 
@@ -112,17 +112,18 @@ class Demo(object):
         return input().encode('utf-8')
 
     def write(self, data):
-        if data[:3] == "LOG":
-            print(f"DEMO Log: {data[3:]}")
-        elif data[:3] == "ERR":
-            print(f"DEMO Error: \033[31m{data[3:]}\033[0m")
-        elif data[:3] == "POK":
-            print(f"INFO: Client just poked me. Not sure what to do about this.")
-        elif data[:3] == "EXT":
-            print("Remote shutdown requested. Sabotaging self...")
-            sys.exit(0)
-        else:
-            print(f"Warning: got invalid data '{data}'")
+        print(f"DEMO_MODE: {data}")
+        # if data[:3] == "LOG":
+        #    print(f"DEMO Log: {data[3:]}")
+        # elif data[:3] == "ERR":
+        #    print(f"DEMO Error: \033[31m{data[3:]}\033[0m")
+        # elif data[:3] == "POK":
+        #    print(f"INFO: Client just poked me. Not sure what to do about this.")
+        # elif data[:3] == "EXT":
+        #    print("Remote shutdown requested. Sabotaging self...")
+        #    sys.exit(0)
+        # else:
+        #    print(f"Warning: got invalid data '{data}'")
 
     def __enter__(self): return self
     def __exit__(self): pass
