@@ -26,7 +26,6 @@ if __name__ == "__main__":
     else:
         serial_port = "/dev/cu.usbmodem142111101"
         #serial_port = "/dev/cu.usbmodem14201"
-        # serial_port="DEMO"
 
     while True:
         try:
@@ -34,5 +33,3 @@ if __name__ == "__main__":
         except OSError:
             print("WARNING: Serial disconnected. Attempting to reconnect in 1 second...")
             time.sleep(1)
-
-    # except Exception as e:

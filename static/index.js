@@ -3,12 +3,6 @@ const outbox = document.getElementById("outbox");
 const formField = document.getElementById("form-field");
 const form = document.getElementById("form");
 
-function addLiChild(parent, content) {
-  let liChild = document.createElement("li");
-  liChild.textContent = content;
-  parent.appendChild(liChild);
-}
-
 const TIMEOUT = 1000;
 
 var ws; // Global variable
@@ -33,7 +27,10 @@ function connect() {
     setTimeout(connect, TIMEOUT);
   });
   ws.addEventListener("message", msg => {
-    addLiChild(inbox, msg.data);
+    $('#contaminacion').text($('<div/>').text(msg.data).html());
+    $('#ratones').text($('<div/>').text(msg.data).html());
+
+    console.log(msg.data);
   });
 }
 

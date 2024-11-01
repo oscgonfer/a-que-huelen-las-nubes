@@ -4,23 +4,80 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WebSockets Raw</title>
-</head>
-<body>
-  <div style="display: flex; justify-content: baseline; align-items: baseline;">
-    <div style="width: 50%; margin-right: 2em;">
-      <p>Incoming</p>
-      <ol id="inbox"></ol>
-    </div>
-    <div>
-      <p>Outgoing</p>
-      <form id="form">
-        <input type="text" id="form-field">
-        <input type="submit" value="Submit">
-      </form>
-      <ol id="outbox"></ol>
-    </div>
-  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
   <script src="/static/index.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital@0;1&family=Playfair+Display+SC:wght@900&family=Playfair+Display:ital,wght@0,800;1,800&family=Manrope:wght@800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.min.css'>
+  <link rel='stylesheet' href='style.css'>
+  <title>El periodico del convento</title>
+</head>
+
+<body>
+
+  <div class="main__wrapper">
+    <main>
+      <h1>The Tarragona Times</h1>
+      <aside>
+        <div>
+          <div class="issue">Issue #1 </div>
+          <div class="date">Tuesday, 18 October, 2024</div>
+          <div class="edition">Convent Edition</div>
+        </div>
+      </aside>
+      <h2 class="title--large main-title">Un hombre respira mucho aire y se muere</h2>
+      <div class="main-text multi-column">
+        <p>Un hombre de Tarragona ha respirado demasiado aire puro y ha fallecido</p>
+        <p>El hombre, de edad mediana, ha respirado <em id="contaminacion"></em> litros de aire. Su familia, en comentarios a este periódico lamentaban la noticia: "La verdad es que no esperábamos que esto pudiera pasar. <em> El aire es realmente muy limpio en Tarragona </em>. El hombre ha sido transladado al tanatorio de San Petrolino, donde la capilla ardiente estará hasta el próximo Sábado</p>
+      </div>
+        <figure><img src="https://1.bp.blogspot.com/-1JZ9dpjaYJs/XkKtP96oJCI/AAAAAAAAWeM/JpW0D3F_5Agt_3p7PIfCJl4sqfqF4G6-gCLcBGAsYHQ/s1600/Tarragona%2BForo%2Bde%2Bla%2BColonia.jpg"/>
+          <figcaption>Lugar donde se encontró al hombre fallecido por aire demasiado puro</figcaption>
+        </figure>
+        <a class="item-with-image plan span--2 long--2" href="https://codepen.io/oliviale/full/moLrBq" target="_blank"><img src="https://files.soniccdn.com/images/articles/original/43114.jpg"/>
+        <h4>¿Sin planes para el fin de semana?</h4>
+        <div class="multi-column">
+          <p>¡No te pierdas el evento del año organizado por la Petroquímica de Tarragona! El <em>Concierto de la mascarilla</em> tendrá lugar en la Plaza de la Vila, donde se espera que miles de personas disfruten de conciertos con aire re-limpio y con buena música!</p>
+        </div></a><a class="hogwarts" href="https://codepen.io/oliviale/full/MZZYyO" target="_blank">
+        <div class="hogwarts__title">50% Off Hogwarts Express tickets</div>
+        <div class="hogwarts__image"> <span>Limited time offer</span><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/567707/showcase-hogwarts.svg"/></div></a><a class="item-with-image pasta with-border" href="https://codepen.io/oliviale/full/zYvxXWw" target="_blank">
+        <h4>Rodalies en obras</h4>
+        <p>Un día más, el tren está en obras. ¡Una pena de noticia! Seguramente mañana será igual.</p></a><a class="item-with-image magazine with-border" href="https://codepen.io/oliviale/full/GRKQoKM" target="_blank">
+        <h4>Maravillas escondidas</h4>
+        <p>Un tributo a las maravillas de Tarragona, escondidas bajo la contaminación de la ciudad. ¡No te lo pierdas!</p></a><a class="item-with-image style" href="https://codepen.io/collection/XJyNPm" target="_blank">
+        <h4>Let's adopt, don't shop.</h4>
+        <p>Explore a style guide and various page layouts for a pet adoption site in the  <em>Style Guide</em> collection. Inspired by the <em>Atomic Design</em> principle, this 8-pen collection includes a 404 page concept, an admin dashboard and what a Twitter user calls a 'media card zen garden'. Each pen comes with five (yes, five) color themes, including the  precious dark mode.</p></a><a class="item-with-image toggles" href="https://codepen.io/oliviale/full/xxboXzo" target="_blank"><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/567707/showcase-toggle.gif"/>
+        <h4>Toggles</h4>
+        <p>Eight playful toggles to toggle on and off for your amusement. Is it possible to use these on your site and still adhere to assessibility rules? No. But there's a really cute dog one you <em>have  </em>to see.</p></a><a class="menu" href="https://codepen.io/oliviale/full/LYYrKMV" target="_blank">
+        <figure><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/567707/showcase-menu.jpg"/>
+          <figcaption>See the new and improved menu for Toasty!</figcaption>
+        </figure></a><a class="social" href="https://codepen.io/oliviale/full/QWjjrZX" tagrget="_blank"><img class="social__image" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/567707/showcase-social.gif"/>
+        <div class="social__subtitle">World News</div>
+        <div class="social__content">Looks like Covid-19 is gonna be around for a while so here is another friendly reminder to practice social distancing. Oh, and wear a mask! </div></a>
+      <div class="item-with-image cssgrid-collection"><a class="cssgrid-collection__image" href="https://codepen.io/collection/DQvYpQ" target="_blank"><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/567707/showcase-co-grid.jpg"/></a>
+        <div class="cssgrid-collection__content">
+          <h4> <a href="https://codepen.io/collection/DQvYpQ" target="_blank">More CSS Grid things like this one. Shelves, coupons and more!  </a></h4>
+          <div class="multi-column-3">
+            <p>Get your fill of more CSS Grid items in this collection. There are a total of 32 pens to date... well, 33, if you count this one too. What can you expect in this collection? The hidden gems, in my totally  unbiased opinion, are <a href="https://codepen.io/oliviale/full/wbyVWr" target="_blank">the recreation of the Pac-Man layout</a> and  <a href="https://codepen.io/oliviale/pen/wbyVWr" target="_blank">coupons inspired by junk mail</a>. A lot of joke items of things that shouldn't be done in CSS Grid, such as <a href="https://codepen.io/oliviale/full/PXGgMG" target="_blank">a shelf</a>?   <a href="https://codepen.io/oliviale/full/qggOog" target="_blank">Bathroom tiles wtf</a>? and  <a href="https://codepen.io/oliviale/full/bOWqbj" target="_blank">makeup palettes </a>. If you are a cultured person, you will have a chance to enjoy a couple of pens inspired by <a href="https://codepen.io/oliviale/full/JxVZpX" target="_blank">Harry Potter  </a>and  <a href="https://codepen.io/oliviale/full/RwNdeeQ" target="_blank">Pokemon.</a> On the rare occasion that you are looking at this profile for something you can use in production, you really shouldn't. But, there are <em> some   </em>real-world applications, such as <a href="https://codepen.io/oliviale/full/GPXozx" target="_blank">the recipe layout</a>,   <a href="https://codepen.io/oliviale/full/pqoEoJ" target="_blank">the product catalog</a>, and  <a href="https://codepen.io/oliviale/full/XyqQYL" target="_blank">color palettes for a style guide</a>.</p>
+          </div>
+        </div>
+      </div>
+      <div class="sidebar">
+        <h3 class="title--big">Sacadito del horno</h3><img class="pie__image" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/567707/showcase-pie.jpg"/>
+          <div class="pie__subtitle">Aire </div>
+          <div class="pie__content">
+            <h4>¡Mascarillas para todos!</h4>
+            <p>!No te quedes sin la tuya! Aunque el aire esté re-limpio, siempre está bien ponérsela.</p>
+          </div>
+          <h5>Un desarrollador aburrido se pone a programar</h5>
+          <p>Un desarrollador aburrido ha pasado el día programando un periódico falso imitando a este mismo periódico. ¡Cuidado, que no te engañe!</p>
+          <h5>El chocolate es adictivo, pero cura el cáncer</h5>
+          <p>Un estudio de la Universidad de Tarragona descubre que el chocolate es realmente adictivo, pero cura el cáncer de nariz. El estudio se ha realizado con <em id="ratones"></em> ratones en la Facultad de Medicina.</p></a><a class="workout" href="https://codepen.io/oliviale/full/RwWKybY" target="_blank">
+          <div class="workout__image"><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/567707/showcase-workout.jpg" alt="Workout"/></div>
+          <div class="workout__blurb">Always failing to keep track of your workouts? </div>
+          <div class="workout__title">Use this tool!</div></a>
+      </div>
+    </main>
+  </div>
+
 </body>
 </html>
