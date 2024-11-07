@@ -24,6 +24,12 @@ Then run the app:
 python main.py
 ```
 
+Also run the data dispatcher:
+
+```
+python data_fetcher.py
+```
+
 ## Arduino side
 
 Simply plug-in the arduino to the computer. With the code provided in `hardware`, it will send some random messages as an example.
