@@ -1,84 +1,297 @@
-
+NodeProxy.defaultNumAudio = 1;
 p = ProxySpace().push(s.boot);
 q = ();
-OSCFunc.trace(hideStatusMsg: true);
+
+"Setting up environment".postln;
 
 (
-  ~sck_pm_1 = 0.0;
-  ~sck_pm_25 = 0.0;
-  ~sck_pm_10 = 0.0;
-  ~gene_pm_1 = 0.0;
-  ~gene_pm_25 = 0.0;
-  ~gene_pm_10 = 0.0;
-)
+  /// Dm = 0, Em = 1, F = 2, G = 3, Am = 4, C = 5
 
-~user_threshold = 0 //{ SinOsc.ar(0.1).range(0, 1) };
+  q.harmony_transition_edges = [
+    [0, 1, 2, 3, 4],
+    [4, 5],
+    [3, 5],
+    [0, 1, 3, 4],
+    [0, 1, 4],
+    [3, 4]
+  ];
 
-~noisiness = { LFNoise2.kr(500).range(0, 0.15) + LinLin.kr(~user_threshold, 0, 1, -1, -0.5) };
+  q.harmony_transition_probabilities = [
+    [0.3, 0.1, 0.1, 0.2, 0.3],
+    [0.6, 0.4],
+    [0.6, 0.4],
+    [0.25, 0.2, 0.3, 0.25],
+    [0.3, 0.3, 0.4],
+    [0.5, 0.5]
+  ];
 
-~dust_density = { LinLin.kr(~user_threshold, 0, 1, 0.1, 1.5) };
-~lpg_limit = 1.0;
-~osc_amp = { SinOsc.ar(0.1).range(0.1, 0.3) };
-~pm_1_pitch = Note("C5").freq;
-~pm_25_pitch = Note("F4").freq;
-~pm_10_pitch = Note("D4").freq;
-~pm_1_release = 0.1;
-~pm_25_release = 0.12;
-~pm_10_release = 0.15;
+  q.harmony_transition_markov = MarkovSet(
+    [
+      [0, q.harmony_transition_edges[0], q.harmony_transition_probabilities[0]],
+      [1, q.harmony_transition_edges[1], q.harmony_transition_probabilities[1]],
+      [2, q.harmony_transition_edges[2], q.harmony_transition_probabilities[2]],
+      [3, q.harmony_transition_edges[3], q.harmony_transition_probabilities[3]],
+      [4, q.harmony_transition_edges[4], q.harmony_transition_probabilities[4]],
+      [5, q.harmony_transition_edges[5], q.harmony_transition_probabilities[5]]
+    ]
+  );
 
+  q.harmony_transition_markov.seeds = [0];
+  q.harmony_transition_stream = q.harmony_transition_markov.asStream;
 
-~reverb_mix = 0.6
-~reverb_size = 1.0
-~reverb_damp = 0.4
+  q.pm_1_notes  = ["A4", "E5", "A4", "B4", "A4", "E5"].collect { |n| Note(n).freq };
+  q.pm_25_notes = ["F4", "G4", "F4", "G4", "G4", "G4"].collect { |n| Note(n).freq };
+  q.pm_10_notes = ["D4", "D4", "C4", "D4", "C4", "C4"].collect { |n| Note(n).freq };
 
-~sck_pm_1_env = { EnvGen.ar(Env.perc(0.0, ~pm_1_release), Dust.kr(~sck_pm_1 * ~dust_density)) }
-~sck_pm_1_osc = { LPG.ar(XFade2.ar(AnalogFoldOsc.ar(~pm_1_pitch, ~osc_amp), PinkNoise.ar, ~noisiness), ~sck_pm_1_env * ~lpg_limit) }
+  q.bass_notes = ["D1", "E1", "F1", "G1", "A1", "G1"].collect { |n| Note(n).freq };
 
-~sck_pm_25_env = { EnvGen.ar(Env.perc(0.0, ~pm_25_release), Dust.kr(~sck_pm_25 * ~dust_density)) }
-~sck_pm_25_osc = { LPG.ar(XFade2.ar(AnalogFoldOsc.ar(~pm_25_pitch, ~osc_amp), PinkNoise.ar, ~noisiness), ~sck_pm_25_env * ~lpg_limit) }
+  q.harmony_transition_base_time = 10;
 
-~sck_pm_10_env = { EnvGen.ar(Env.perc(0.0, ~pm_10_release), Dust.kr(~sck_pm_10 * ~dust_density)) }
-~sck_pm_10_osc = { LPG.ar(XFade2.ar(AnalogFoldOsc.ar(~pm_10_pitch, ~osc_amp), PinkNoise.ar, ~noisiness), ~sck_pm_10_env * ~lpg_limit) }
+  q.countryside_ambience = Buffer.read(s, "samples/countryside_ambience.wav".asAbsolutePath);
+  q.refinery_ambience = Buffer.read(s, "samples/refinery_ambience.wav".asAbsolutePath);
 
-~gene_pm_1_env = { EnvGen.ar(Env.perc(0.0, ~pm_1_release), Dust.kr(~gene_pm_1 * ~dust_density)) }
-~gene_pm_1_osc = { LPG.ar(XFade2.ar(AnalogFoldOsc.ar(~pm_1_pitch, ~osc_amp), PinkNoise.ar, ~noisiness), ~gene_pm_1_env * ~lpg_limit) }
+  q.bombona_hit = Buffer.read(s, "samples/bombona.wav".asAbsolutePath);
+  q.machinery_loop = Buffer.read(s, "samples/machinery_loop.wav".asAbsolutePath);
 
-~gene_pm_25_env = { EnvGen.ar(Env.perc(0.0, ~pm_25_release), Dust.kr(~gene_pm_25 * ~dust_density)) }
-~gene_pm_25_osc = { LPG.ar(XFade2.ar(AnalogFoldOsc.ar(~pm_25_pitch, ~osc_amp), PinkNoise.ar, ~noisiness), ~gene_pm_25_env * ~lpg_limit) }
+  q.sck_pm_1 = Bus.control(s, 1);
+  q.sck_pm_25 = Bus.control(s, 1);
+  q.sck_pm_10 = Bus.control(s, 1);
+  q.sck_sfa30_f = Bus.control(s, 1);
+  q.sck_adc_49_1 = Bus.control(s, 1);
+  q.gene_pm_1 = Bus.control(s, 1);
+  q.gene_pm_25 = Bus.control(s, 1);
+  q.gene_pm_10 = Bus.control(s, 1);
+  q.gene_nox = Bus.control(s, 1);
+  q.gene_no2 = Bus.control(s, 1);
+);
 
-~gene_pm_10_env = { EnvGen.ar(Env.perc(0.0, ~pm_10_release), Dust.kr(~gene_pm_10 * ~dust_density)) }
-~gene_pm_10_osc = { LPG.ar(XFade2.ar(AnalogFoldOsc.ar(~pm_10_pitch, ~osc_amp), PinkNoise.ar, ~noisiness), ~gene_pm_10_env * ~lpg_limit) }
-
-~gene_mix = { ~gene_pm_1_osc + ~gene_pm_25_osc + ~gene_pm_10_osc }
-
-~sck_mix = { ~sck_pm_1_osc + ~sck_pm_25_osc + ~sck_pm_10_osc }
-
-~out = { FreeVerb.ar([~gene_mix, ~sck_mix], room: ~reverb_size, damp: ~reverb_damp, mix: ~reverb_mix) }
-
-
+"Loading OSC listeners".postln;
 (
   OSCdef(\sck_pm_1, { |msg|
-    ~sck_pm_1 = msg[1];
+    q.sck_pm_1.set(msg[1]);
   }, "/sck/pm_avg_1");
 
   OSCdef(\sck_pm_25, { |msg|
-    ~sck_pm_25 = msg[1];
+    q.sck_pm_25.set(msg[1]);
   }, "/sck/pm_avg_2.5");
 
   OSCdef(\sck_pm_10, { |msg|
-    ~sck_pm_10 = msg[1];
+    q.sck_pm_10.set(msg[1]);
   }, "/sck/pm_avg_10");
 
+  OSCdef(\sck_sfa30_f, { |msg|
+    q.sck_sfa30_f.set(msg[1]);
+  }, "/sck/sfa30_f");
+
+  OSCdef(\sck_adc_49_1, { |msg|
+    q.sck_adc_49_1.set(msg[1]);
+  }, "/sck/adc_49_1");
 
   OSCdef(\gene_pm_1, { |msg|
+    q.gene_pm_1.set(msg[1]);
     ~gene_pm_1 = msg[1];
   }, "/gene/pm1");
 
   OSCdef(\gene_pm_25, { |msg|
-    ~gene_pm_25 = msg[1];
+    q.gene_pm_25.set(msg[1]);
   }, "/gene/pm2.5");
 
   OSCdef(\gene_pm_10, { |msg|
-    ~gene_pm_10 = msg[1];
+    q.gene_pm_10.set(msg[1]);
   }, "/gene/pm10");
-)
+
+  OSCdef(\gene_nox, { |msg|
+    q.gene_nox.set(msg[1]);
+  }, "/gene/nox");
+
+  OSCdef(\gene_no2, { |msg|
+    q.gene_no2.set(msg[1]);
+  }, "/gene/no2");
+
+);
+"Setting parameters".postln;
+
+~user_threshold = { SinOsc.kr(0.1).range(0, 1) };
+
+(
+  ~sck_pm_1 = { \input.kr };
+  ~sck_pm_1.set(\input, q.sck_pm_1.asMap);
+  ~sck_pm_25 = { \input.kr };
+  ~sck_pm_25.set(\input, q.sck_pm_25.asMap);
+  ~sck_pm_10 = { \input.kr };
+  ~sck_pm_10.set(\input, q.sck_pm_10.asMap);
+  ~sck_sfa30_f = { \input.kr };
+  ~sck_sfa30_f.set(\input, q.sck_sfa30_f.asMap);
+  ~sck_adc_49_1 = { \input.kr };
+  ~sck_adc_49_1.set(\input, q.sck_adc_49_1.asMap);
+  ~gene_pm_1 = { \input.kr };
+  ~gene_pm_1.set(\input, q.gene_pm_1.asMap);
+  ~gene_pm_25 = { \input.kr };
+  ~gene_pm_25.set(\input, q.gene_pm_25.asMap);
+  ~gene_pm_10 = { \input.kr };
+  ~gene_pm_10.set(\input, q.gene_pm_10.asMap);
+  ~gene_nox = { \input.kr };
+  ~gene_nox.set(\input, q.gene_nox.asMap);
+  ~gene_no2 = { \input.kr };
+  ~gene_no2.set(\input, q.gene_no2.asMap);
+);
+
+~pm_1_release = 0.1;
+~pm_25_release = 0.12;
+~pm_10_release = 0.15;
+
+~reverb_mix = 0.5;
+~reverb_size = 1.0;
+~reverb_damp = 0.15;
+
+~lpg_limit = 0.7;
+
+"Setting up harmony movement".postln;
+
+~harmony_current_state = { \state.kr(0) };
+
+(t = Task.new({
+  loop({
+    var state = q.harmony_transition_stream.next;
+    ~harmony_current_state.set(\state, state);
+    q.harmony_transition_base_time.wait;
+  });
+});
+t.start);
+
+"Setting up control signals".postln;
+
+~noisiness = { LFNoise2.kr(500).range(0, 0.15) + LinLin.kr(~user_threshold, 0, 1, -1, 0) };
+~dust_density = { LinLin.kr(~user_threshold, 0, 1, 0.1, 1.5) };
+~osc_amp = { SinOsc.ar(0.1).range(0.1, 0.2) };
+~pm_1_pitch = { Select.kr(~harmony_current_state, q.pm_1_notes) };
+~pm_25_pitch = { Select.kr(~harmony_current_state, q.pm_25_notes) };
+~pm_10_pitch = { Select.kr(~harmony_current_state, q.pm_10_notes) };
+
+~attack =  { 0.01 + LinLin.kr(~user_threshold, 0, 1, 0.1, 0.0) };
+
+"Setting up synths".postln;
+
+(
+SynthDef(\pm_synth, {
+  var env = EnvGen.ar(Env.perc(\attack.kr, \release.kr), Dust.kr(\data.kr * ~dust_density));
+  var osc = LPG.ar(XFade2.ar(AnalogFoldOsc.ar(\freq.kr, ~osc_amp), PinkNoise.ar, ~noisiness), env * ~lpg_limit);
+  var reso = Resonator.ar(osc, LFNoise2.kr(500).range(-50, 50) + \freq.kr, damping: 0.2, position: 0.1, structure: 0.4);
+  var distort = AnalogVintageDistortion.ar(reso, bias: 2.0, drivegain: 0.3, highgain: 0.3, shelvingfreq: 500);
+  var mix = XFade2.ar(osc, distort, LinLin.ar(~user_threshold, 0, 1, -1, 1));
+  Out.ar(\out.kr(0), mix * EnvGen.kr(Env.asr(\fadeTime.kr(0.1), 1, \fadeTime.kr(0.1)), \gate.kr(1.0), doneAction: Done.freeSelf))
+}).add;
+);
+
+s.sync; // WILL ERROR WHEN RUNNING DIRECTLY FROM SC UI
+
+(
+~sck_pm_1_osc = \pm_synth;
+~sck_pm_1_osc.set(\release, ~pm_1_release, \freq, ~pm_1_pitch, \data, ~sck_pm_1, \attack, ~attack);
+
+
+~sck_pm_25_osc = \pm_synth;
+~sck_pm_25_osc.set(\release, ~pm_25_release, \freq, ~pm_25_pitch, \data, ~sck_pm_25, \attack);
+
+~sck_pm_10_osc = \pm_synth;
+~sck_pm_10_osc.set(\release, ~pm_10_release, \freq, ~pm_10_pitch, \data, ~sck_pm_10);
+
+~gene_pm_1_osc = \pm_synth;
+~gene_pm_1_osc.set(\release, ~pm_1_release, \freq, ~pm_1_pitch, \data, ~gene_pm_1);
+
+~gene_pm_25_osc = \pm_synth;
+~gene_pm_25_osc.set(\release, ~pm_25_release, \freq, ~pm_25_pitch, \data, ~gene_pm_25);
+
+~gene_pm_10_osc = \pm_synth;
+~gene_pm_10_osc.set(\release, ~pm_10_release, \freq, ~pm_10_pitch, \data, ~gene_pm_10);
+);
+
+(~bass_osc = {
+  var clean = SinOsc.ar(Select.kr(~harmony_current_state, q.bass_notes)) * SinOsc.ar(LinLin.kr(~user_threshold, 0, 1, 0.2, 5.0)).range(LinLin.kr(~user_threshold, 0, 1, 0.8, 0), 1.0);
+  var distort = AnalogVintageDistortion.ar(clean, bias: SinOsc.ar(3).range(0, 2.5), lowgain:0.2,highgain:0.3, drivegain: LinLin.kr(~user_threshold, 0, 1, 0, 1));
+  var comped = DCompressor.ar(XFade2.ar(clean, LPF.ar(distort, 600), LinLin.kr(~user_threshold, 0, 1, -1, 1)), ratio: 10);
+  comped * LinLin.ar(~user_threshold, 0, 1, 1.2 , 0.75);
+});
+
+
+
+"Setting up sample players".postln;
+
+(~ambience = {
+  DCompressor.ar(XFade2.ar(
+    PlayBuf.ar(1, q.countryside_ambience.bufnum, BufRateScale.kr(q.countryside_ambience.bufnum), loop: 1.0) * 3.0,
+    XFade2.ar(
+      PlayBuf.ar(1, q.refinery_ambience.bufnum, BufRateScale.kr(q.refinery_ambience.bufnum), loop: 1.0) * 3.0,
+      PlayBuf.ar(1, q.machinery_loop.bufnum, BufRateScale.kr(q.machinery_loop.bufnum), loop: 1.0),
+      SinOsc.ar(0.1).range(-1, 0.5) + LFNoise2.ar(1000).range(-0.3, 0.3)
+    ),
+    LinLin.kr(~user_threshold, 0, 1, -1, 1),
+  ), ratio: 15)
+});
+
+(
+SynthDef(\grain_sample_player, {
+  var attack = \attack.kr(0);
+  var release = \release.kr(0.1);
+  var pitch_variation_range = \pitch_variation.kr(0.0);
+  var pitch_variation = LFNoise2.kr(500).range(1.0 - pitch_variation_range, 1.0 + pitch_variation_range);
+  var impulses = Dust.kr(\grain_density.kr(0));
+  var bufnum = \bufnum.kr;
+  var windows = EnvGen.ar(Env.perc(attack, release, curve: 0), impulses);
+  var playHead = Phasor.ar(
+    impulses,
+    BufRateScale.kr(bufnum) * pitch_variation,
+    0, BufFrames.kr(bufnum),
+    WhiteNoise.kr(BufFrames.kr(bufnum))
+  );
+  var outSig = BufRd.ar(1, bufnum, playHead);
+  var windowed = outSig * windows;
+  Out.ar(\out.kr(0), windowed * EnvGen.kr(Env.asr(\fadeTime.kr(0.1), 1, \fadeTime.kr(0.1)), \gate.kr(1.0), doneAction: Done.freeSelf))
+}).add;
+);
+
+s.sync; //WILL ERROR WHEN  RUNNING DIRECTLY FROM SC UI
+
+(
+~sck_sfa30_f_grain_density = {  ~sck_sfa30_f * ~user_threshold * 2 };
+~sck_sfa30_f_release = { 0.2 * ~user_threshold };
+
+~sck_sfa30_f_osc = \grain_sample_player;
+~sck_sfa30_f_osc.set(
+  \bufnum, q.bombona_hit.bufnum,
+  \grain_density, ~sck_sfa30_f_grain_density,
+  \attack, 0.0,
+  \release, ~sck_sfa30_f_release,
+  \pitch_variation, 0.2
+);
+
+~gene_nox_grain_density = {  ~gene_nox * ~user_threshold * 0.33 };
+~gene_nox_release = { 0.2 * ~user_threshold };
+
+~gene_nox_osc = \grain_sample_player;
+~gene_nox_osc.set(
+  \bufnum, q.bombona_hit.bufnum,
+  \grain_density, ~gene_nox_grain_density,
+  \attack, 0.0,
+  \release, ~gene_nox_release,
+  \pitch_variation, 0.5
+);
+);
+
+
+"SETTING UP MIX".postln;
+
+~base_mix = { (0.1 * ~bass_osc) + (1.5 * ~ambience) };
+
+~gene_mix = { ~gene_pm_1_osc + ~gene_pm_25_osc + ~gene_pm_10_osc + ~gene_nox_osc  };
+
+~sck_mix = { ~sck_pm_1_osc + ~sck_pm_25_osc + ~sck_pm_10_osc + ~sck_sfa30_f_osc };
+
+~left_mix = { (2.0 * ~gene_mix) + ~base_mix };
+
+~right_mix = { (2.0 * ~sck_mix) + ~base_mix };
+
+~out = { 0.5* FreeVerb.ar(DCompressor.ar([~left_mix, ~right_mix], ratio: 5), room: ~reverb_size, damp: ~reverb_damp, mix: ~reverb_mix) };
+
+~out.play;
+
