@@ -29,6 +29,7 @@
     display: block;
     color: var(--black);
   }
+
   a:hover, a:focus, a:active, a:visited {
     color: var(--black--acc);
   }
@@ -42,6 +43,7 @@
     font: 50px/1 "Playfair Display SC";
     text-align: center;
   }
+
   @media (min-width: 700px) {
     h1 {
       font: 70px/1 "Playfair Display SC";
@@ -65,6 +67,7 @@
   p {
     line-height: 1.3;
   }
+
   p a {
     display: inline;
   }
@@ -100,15 +103,40 @@
     grid-column: 1/-1;
   }
   @media (min-width: 700px) {
-    main .main-title {
+    main #main-article-title {
       grid-column: 1/-1;
     }
   }
   @media (min-width: 1024px) {
-    main .main-title {
+    main #main-article-title {
       grid-column: 1/-2;
     }
+
+    main #main-figure {
+      grid-column: 2/-2;
+    }
+
+    main #main-article-text-left {
+      grid-column: span 1;
+    }
+
+    main #main-article-text-bottom {
+      grid-column: span 4;
+    }
+
+    main #article-3-1{
+      grid-column: span 2;
+    }
+
+    main #article-3-2 {
+      grid-column: span 2;
+    }
+
+    main .sidebar-article {
+      margin-top: 20px;
+    }
   }
+
   @media (min-width: 700px) {
     main .terrarium {
       grid-column: 1/-1;
@@ -126,7 +154,7 @@
   }
   @media (min-width: 1024px) {
     main .main-text {
-      grid-column: span 2;
+      grid-column: span 4;
     }
   }
   @media (min-width: 700px) {
@@ -140,10 +168,7 @@
       grid-column: 5/6;
     }
   }
-  main .social {
-    grid-column: 1/-2;
-    grid-row: 8/9;
-  }
+
   main .article-bar-1 {
     grid-row: span 4;
   }
@@ -183,8 +208,8 @@
   }
   @media (min-width: 700px) and (max-width: 1024px) {
     main .style,
-  main .magazine,
-  main .pasta {
+    main .magazine,
+    main .pasta {
       grid-column: 1/3;
     }
   }
@@ -232,17 +257,20 @@
     letter-spacing: 1px;
     margin: 1.5rem 0;
   }
+
   @media (min-width: 700px) {
     aside {
       margin: 0;
     }
   }
+
   aside > div {
     display: flex;
     align-items: center;
     border: solid var(--black);
     border-width: 1px 0;
   }
+
   aside > div > div {
     flex: 1;
     padding: 8px;
@@ -258,9 +286,11 @@
       column-count: 3;
     }
   }
+
   .sidebar {
     margin-top: 3rem;
   }
+
   @media (min-width: 700px) and (max-width: 1024px) {
     .sidebar {
       display: flex;
@@ -285,6 +315,7 @@
       order: 3;
     }
   }
+
   @media (min-width: 1024px) {
     .sidebar {
       display: block;
@@ -297,6 +328,7 @@
   .main-text.multi-column {
     margin: 0;
   }
+
   .main-text.multi-column p {
     margin-bottom: 0.8rem;
   }
@@ -311,11 +343,13 @@
     margin: 1.5rem auto;
     overflow: hidden;
   }
+
   @media (min-width: 700px) {
     .hogwarts {
       margin: 0;
     }
   }
+
   .hogwarts__title {
     font: 800 24px/1 var(--font-sans-serif);
     text-transform: uppercase;
@@ -324,16 +358,19 @@
     padding: 0.8rem 0.8rem 0.9rem;
     transition: 0.2s ease;
   }
+
   @media (min-width: 700px) and (max-width: 1024px) {
     .hogwarts__title {
       font: 800 21px/1.2 var(--font-sans-serif);
       padding: 1.5rem 0.5rem;
     }
   }
+
   .hogwarts__image {
     height: 100%;
     position: relative;
   }
+
   .hogwarts__image img {
     transform: rotate(60deg);
     height: 150%;
@@ -343,11 +380,13 @@
     left: -70%;
     bottom: -35%;
   }
+
   @media (min-width: 700px) and (max-width: 1024px) {
     .hogwarts__image img {
       bottom: -20%;
     }
   }
+
   .hogwarts__image span {
     font-style: italic;
     max-width: 110px;
@@ -367,9 +406,11 @@
       margin: 0 0 1.5rem;
     }
   }
+
   .terrarium figure {
     height: 100%;
   }
+
   .terrarium img {
     height: 96%;
     object-fit: cover;
@@ -381,12 +422,14 @@
     color: var(--gray);
     text-align: left;
   }
+
   .pie__image {
     margin: 0;
     border: 0;
     max-height: 15rem;
     object-fit: cover;
   }
+
   .pie__subtitle {
     background: #999;
     text-transform: uppercase;
@@ -450,6 +493,7 @@
   .menu {
     margin: 1.5rem 0;
   }
+
   @media (min-width: 1024px) {
     .menu {
       margin: 0;
@@ -495,73 +539,6 @@
     }
   }
 
-  .workout {
-    border: 2px solid transparent;
-    outline: 3px solid var(--black);
-    box-shadow: inset 0 0 0 1px var(--black);
-    width: calc(100% - 4px);
-    margin: 3rem auto 0.2rem;
-  }
-  .workout__image {
-    padding: 2px;
-  }
-  .workout__image img {
-    height: 16rem;
-    object-fit: cover;
-    object-position: left;
-    border: none;
-  }
-  @media (min-width: 1024px) {
-    .workout__image img {
-      height: 25rem;
-    }
-  }
-  .workout__blurb {
-    font: 22px/1.1 var(--font-sans-serif);
-    text-align: center;
-    padding: 0.5rem;
-    color: var(--black);
-    margin: -1rem 0.5rem 0.3rem;
-  }
-  .workout__title {
-    font: 18px/1.1 var(--font-sans-serif);
-    text-transform: uppercase;
-    text-align: center;
-    padding: 1rem;
-    background: var(--black);
-    color: var(--gray);
-    transition: 0.2s ease;
-  }
-
-  .social {
-    display: grid;
-    grid-template-columns: 1fr 3fr;
-    grid-template-rows: max-content auto;
-    color: var(--gray);
-    text-align: left;
-  }
-  .social__image {
-    margin: 0;
-    border: 0;
-    grid-row: span 2;
-    height: 100%;
-    object-fit: cover;
-  }
-  .social__subtitle {
-    background: #999;
-    text-transform: uppercase;
-    line-height: 1;
-    padding: 0.4rem 1rem;
-    color: var(--gray);
-    font: 14px var(--font-sans-serif);
-  }
-  .social__content {
-    background: #666;
-    padding: 1rem;
-    color: var(--gray);
-    grid-column: 2;
-  }
-
   .plan {
     padding-bottom: 1rem;
   }
@@ -578,19 +555,12 @@
   }
 
   .pie:hover img,
-  .social:hover img,
   .menu:hover img,
   .terrarium:hover img,
   .plan:hover img,
   .toggles:hover img,
-  .workout:hover img,
   .cssgrid-collection__image:hover img {
     filter: grayscale(0);
-  }
-
-  .workout:hover .workout__title {
-    background: transparent;
-    color: var(--black);
   }
 
   .hogwarts:hover .hogwarts__title {
