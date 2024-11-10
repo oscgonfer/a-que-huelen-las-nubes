@@ -9,7 +9,7 @@ void setup()
 
 
 void loop() {
-    int randNumber = random(300);
-    Serial.println(randNumber);
+    float pot = analogRead(A0)/1024*255;
+    Serial.println(pot);
     delay(100);
 }
