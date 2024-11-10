@@ -3,17 +3,18 @@ from lib.serial import Serial
 import asyncio
 import sys
 import time
+import argparse
 from lib.config import *
 
-async def main(websockets_server_port, serial_port):
+async def main(websockets_server_port, serial_port, baudrate):
     server = Server(port=websockets_server_port)
     serial = Serial(
         port=serial_port,
-        baudrate=9600,
+        baudrate=baudrate,
         to_serial=server.to_serial,
         from_serial=server.from_serial,
         timeout=SERIAL_TIMEOUT,
-        osc_server=(SUPERCOLLIDER_IP, SUPERCOLLIDER_PORT, SUPERCOLLIDER_TOPIC)
+        osc_server=(OSC_IP, OSC_PORT, OSC_TOPIC)
     )
 
     await asyncio.gather(
@@ -22,17 +23,21 @@ async def main(websockets_server_port, serial_port):
     )
 
 if __name__ == "__main__":
-    websockets_server_port = WEBSOCKETS_PORT
+    parser = argparse.ArgumentParser()
 
-    if len(sys.argv) > 1:
-        serial_port = sys.argv[1]
-    else:
-        serial_port = "/dev/cu.usbmodem142111101"
-        #serial_port = "/dev/cu.usbmodem14201"
+    parser.add_argument(
+        "--port", type=str, default=SERIAL_PORT, help="Serial port"
+    )
+
+    parser.add_argument(
+        "--baudrate", type=int, default=SERIAL_BAUDRATE, help="Serial port baudrate"
+    )
+
+    args = parser.parse_args()
 
     while True:
         try:
-            asyncio.run(main(websockets_server_port, serial_port))
+            asyncio.run(main(WEBSOCKETS_PORT, args.port, args.baudrate))
         except OSError:
             print("WARNING: Serial disconnected. Attempting to reconnect in 1 second...")
             time.sleep(1)
