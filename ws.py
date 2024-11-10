@@ -11,6 +11,8 @@ async def main(websockets_server_port, serial_port):
         port=serial_port,
         baudrate=9600,
         to_serial=server.to_serial,
+        from_serial=server.from_serial,
+        timeout=SERIAL_TIMEOUT,
         osc_server=(SUPERCOLLIDER_IP, SUPERCOLLIDER_PORT, SUPERCOLLIDER_TOPIC)
     )
 
