@@ -3,6 +3,7 @@ from lib.serial import Serial
 import asyncio
 import sys
 import time
+from lib.config import *
 
 
 async def main(server_port, serial_port):
@@ -11,7 +12,7 @@ async def main(server_port, serial_port):
         port=serial_port,
         baudrate=9600,
         to_serial=server.to_serial,
-        from_serial=server.from_serial
+        osc_server=(SUPERCOLLIDER_IP, SUPERCOLLIDER_PORT, SUPERCOLLIDER_TOPIC)
     )
 
     await asyncio.gather(

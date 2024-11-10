@@ -4,10 +4,12 @@ import time
 import random
 import sys
 import datetime
-
+from pythonosc import udp_client
 
 class Serial(object):
-    def __init__(self, port, baudrate, to_serial: asyncio.Queue, from_serial: asyncio.Queue, timeout=1):
+    def __init__(self, port, baudrate,
+        to_serial: asyncio.Queue, from_serial: asyncio.Queue,
+        timeout=0.001, osc_server= (None, None, None)):
         # Queues for communicating with server
         self.to_serial = to_serial
         self.from_serial = from_serial
@@ -21,16 +23,29 @@ class Serial(object):
         else:
             self.serial = serial.Serial(port, baudrate, timeout=timeout)
 
+
+        if any([param is None for param in osc_server]):
+            print('No OSC started')
+            self.osc_client = None
+        else:
+            self.osc_client = udp_client.SimpleUDPClient(osc_server[0], osc_server[1])
+            self.osc_topic = osc_server[2]
+            self.osc_client.send_message(self.osc_topic, "hello")
+
     def _readline_blocking(self) -> str:
         while self.serial.in_waiting == 0:
             time.sleep(self.timeout)
-        return self.serial.readline().decode("utf-8")
+        return self.serial.readline().decode("utf-8").strip("\r\n")
 
     async def listen(self):
         while True:
             message = await asyncio.get_event_loop().run_in_executor(None, self._readline_blocking)
-            #print(f"Got: {message}")
+            print(f"Serial message: {message}")
             await self.from_serial.put(message)
+
+            if self.osc_client is not None:
+                self.osc_client.send_message(self.osc_topic, message+"\n")
+
             if self.recording:
                 self.recorded_data.append(message)
                 if len(self.recorded_data) > self.recording_buffer_size:
