@@ -118,7 +118,7 @@ q = ();
 
 
 (
-  ~user_threshold = { \input.kr.poll(label: "user threshold") };
+  ~user_threshold = { \input.kr };
   ~user_threshold.set(\input, q.user_threshold.asMap);
   ~sck_pm_1 = { \input.kr };
   ~sck_pm_1.set(\input, q.sck_pm_1.asMap);
