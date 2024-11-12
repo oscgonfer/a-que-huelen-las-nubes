@@ -53,6 +53,7 @@ q = ();
   q.bombona_hit = Buffer.read(s, "samples/bombona.wav".asAbsolutePath);
   q.machinery_loop = Buffer.read(s, "samples/machinery_loop.wav".asAbsolutePath);
 
+  q.user_threshold = Bus.control(s, 1);
   q.sck_pm_1 = Bus.control(s, 1);
   q.sck_pm_25 = Bus.control(s, 1);
   q.sck_pm_10 = Bus.control(s, 1);
@@ -67,6 +68,10 @@ q = ();
 
 "Loading OSC listeners".postln;
 (
+  OSCdef(\user_threshold, { |msg|
+    q.user_threshold.set(msg[1]);
+  }, "/nubes/user_threshold");
+
   OSCdef(\sck_pm_1, { |msg|
     q.sck_pm_1.set(msg[1]);
   }, "/sck/pm_avg_1");
@@ -111,9 +116,10 @@ q = ();
 );
 "Setting parameters".postln;
 
-~user_threshold = { SinOsc.kr(0.1).range(0, 1) };
 
 (
+  ~user_threshold = { \input.kr.poll(label: "user threshold") };
+  ~user_threshold.set(\input, q.user_threshold.asMap);
   ~sck_pm_1 = { \input.kr };
   ~sck_pm_1.set(\input, q.sck_pm_1.asMap);
   ~sck_pm_25 = { \input.kr };
