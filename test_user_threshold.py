@@ -18,3 +18,8 @@ with mido.open_input(MIDI_CONTROLLER_NAME) as input:
             value= message.value / 127.0
             print(key, value)
             client.send_message(key, value)
+        if message.channel == MIDI_CHANNEL and message.control == 1:
+            key = "/sck/light"
+            value= message.value / 127.0 * 15000
+            print(key, value)
+            client.send_message(key, value)

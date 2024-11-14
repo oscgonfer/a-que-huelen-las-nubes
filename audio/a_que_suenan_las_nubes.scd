@@ -43,6 +43,10 @@ q = ();
   q.pm_25_notes = ["F4", "G4", "F4", "G4", "G4", "G4"].collect { |n| Note(n).freq };
   q.pm_10_notes = ["D4", "D4", "C4", "D4", "C4", "C4"].collect { |n| Note(n).freq };
 
+  q.adc_49_1_notes = ["C5", "B5", "Bf5", "Bf5", "B5", "B5" ].collect { |n| Note(n).freq };
+
+  q.gene_no2_notes = ["F5", "E5", "Ef5", "D5", "C5", "B5" ].collect { |n| Note(n).freq };
+
   q.bass_notes = ["D1", "E1", "F1", "G1", "A1", "G1"].collect { |n| Note(n).freq };
 
   q.harmony_transition_base_time = 10;
@@ -64,13 +68,20 @@ q = ();
   q.gene_pm_10 = Bus.control(s, 1);
   q.gene_nox = Bus.control(s, 1);
   q.gene_no2 = Bus.control(s, 1);
+  q.light = Bus.control(s, 1); //For some subtle variation throughout the day
 );
 
 "Loading OSC listeners".postln;
 (
+
   OSCdef(\user_threshold, { |msg|
     q.user_threshold.set(msg[1]);
   }, "/nubes/user_threshold");
+
+  OSCdef(\light, { |msg|
+    q.light.set(msg[1]);
+  }, "/sck/light");
+
 
   OSCdef(\sck_pm_1, { |msg|
     q.sck_pm_1.set(msg[1]);
@@ -120,6 +131,8 @@ q = ();
 (
   ~user_threshold = { \input.kr };
   ~user_threshold.set(\input, q.user_threshold.asMap);
+  ~light = { \input.kr };
+  ~light.set(\input, q.light.asMap);
   ~sck_pm_1 = { \input.kr };
   ~sck_pm_1.set(\input, q.sck_pm_1.asMap);
   ~sck_pm_25 = { \input.kr };
@@ -160,7 +173,7 @@ q = ();
   loop({
     var state = q.harmony_transition_stream.next;
     ~harmony_current_state.set(\state, state);
-    q.harmony_transition_base_time.wait;
+    q.harmony_transition_base_time.wait * ((q.light.value/15000)*4.0);
   });
 });
 t.start);
@@ -219,7 +232,25 @@ s.sync; // WILL ERROR WHEN RUNNING DIRECTLY FROM SC UI
   comped * LinLin.ar(~user_threshold, 0, 1, 1.2 , 0.75);
 });
 
+(~sck_adc_49_1_osc = {
+  var pitch = Select.kr(~harmony_current_state, q.adc_49_1_notes);
+  var fmPitch = (2 * pitch) + LFTri.ar(0.05).range(-0.2*pitch, 0.2*pitch) ;
+  var fmAmt = SinOsc.kr(0.04).range(24, 32);
+  var amp = LinLin.kr(~sck_adc_49_1, 0.0, 1.0, 0.5, 1.0) * LinLin.kr(~user_threshold, 0.0, 1.0, 0.0, 0.3);
+  var clicks = Saw.ar(LinLin.kr(~sck_adc_49_1, 0.0, 1.0, 0.2, 10.0));
+  var lfo = LFTri.ar(1/25.0, iphase: 1).range(0, 1);
+  SinOsc.ar(pitch + SinOsc.kr(fmPitch, mul: fmAmt)) * amp * clicks * lfo;
+})
 
+(~gene_no2_osc = {
+  var pitch = Select.kr(~harmony_current_state, q.gene_no2_notes);
+  var fmPitch = (4 * pitch) + LFTri.ar(0.05).range(-0.2*pitch, 0.2*pitch) ;
+  var fmAmt = SinOsc.kr(0.04).range(24, 32);
+  var amp = LinLin.kr(~gene_no2, 0.0, 20.0, 0.5, 1.0) * LinLin.kr(~user_threshold, 0.0, 1.0, 0.0, 0.3);
+  var clicks = Saw.ar(LinLin.kr(~gene_no2, 0.0, 13.0, 0.1, 7.0));
+  var lfo = LFTri.ar(1/30.0).range(0, 1);
+  SinOsc.ar(pitch + SinOsc.kr(fmPitch, mul: fmAmt)) * amp * clicks * lfo;
+})
 
 "Setting up sample players".postln;
 
@@ -227,8 +258,8 @@ s.sync; // WILL ERROR WHEN RUNNING DIRECTLY FROM SC UI
   DCompressor.ar(XFade2.ar(
     PlayBuf.ar(1, q.countryside_ambience.bufnum, BufRateScale.kr(q.countryside_ambience.bufnum), loop: 1.0) * 3.0,
     XFade2.ar(
-      PlayBuf.ar(1, q.refinery_ambience.bufnum, BufRateScale.kr(q.refinery_ambience.bufnum), loop: 1.0) * 3.0,
-      PlayBuf.ar(1, q.machinery_loop.bufnum, BufRateScale.kr(q.machinery_loop.bufnum), loop: 1.0),
+      PlayBuf.ar(1, q.refinery_ambience.bufnum, BufRateScale.kr(q.refinery_ambience.bufnum), loop: 1.0) * 2.0,
+      PlayBuf.ar(1, q.machinery_loop.bufnum, BufRateScale.kr(q.machinery_loop.bufnum), loop: 0.5),
       SinOsc.ar(0.1).range(-1, 0.5) + LFNoise2.ar(1000).range(-0.3, 0.3)
     ),
     LinLin.kr(~user_threshold, 0, 1, -1, 1),
@@ -285,13 +316,15 @@ s.sync; //WILL ERROR WHEN  RUNNING DIRECTLY FROM SC UI
 );
 
 
+
+
 "SETTING UP MIX".postln;
 
-~base_mix = { (0.1 * ~bass_osc) + (1.5 * ~ambience) };
+~base_mix = { (LinLin.kr(~light, 0, 15000, 0.1, 0.05) * ~bass_osc) + (0.5 * ~ambience) };
 
-~gene_mix = { ~gene_pm_1_osc + ~gene_pm_25_osc + ~gene_pm_10_osc + ~gene_nox_osc  };
+~gene_mix = { ~gene_pm_1_osc + ~gene_pm_25_osc + ~gene_pm_10_osc + (~gene_nox_osc * LinLin.kr(~light, 0, 15000, 0.3, 1.0)) + (~gene_no2_osc * LinLin.kr(~light, 0, 15000, 0.5, 0.15)) };
 
-~sck_mix = { ~sck_pm_1_osc + ~sck_pm_25_osc + ~sck_pm_10_osc + ~sck_sfa30_f_osc };
+~sck_mix = { ~sck_pm_1_osc + ~sck_pm_25_osc + ~sck_pm_10_osc + (~sck_sfa30_f_osc * LinLin.kr(~light, 0, 15000, 0.3, 1.0)) + (~sck_adc_49_1_osc * LinLin.kr(~light, 0, 15000, 0.5, 0.15)) };
 
 ~left_mix = { (2.0 * ~gene_mix) + ~base_mix };
 
@@ -300,4 +333,8 @@ s.sync; //WILL ERROR WHEN  RUNNING DIRECTLY FROM SC UI
 ~out = { 0.5* FreeVerb.ar(DCompressor.ar([~left_mix, ~right_mix], ratio: 5), room: ~reverb_size, damp: ~reverb_damp, mix: ~reverb_mix) };
 
 ~out.play;
+
+~test = { ~sck_adc_49_1_osc + ~gene_no2_osc }
+~test.pause
+
 
