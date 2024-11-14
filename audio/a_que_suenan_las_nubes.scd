@@ -173,7 +173,7 @@ q = ();
   loop({
     var state = q.harmony_transition_stream.next;
     ~harmony_current_state.set(\state, state);
-    q.harmony_transition_base_time.wait * ((q.light.value/15000)*4.0);
+    (q.harmony_transition_base_time * ((1 +(q.light.getSynchronous/15000)*1.0))).wait;
   });
 });
 t.start);
@@ -333,8 +333,5 @@ s.sync; //WILL ERROR WHEN  RUNNING DIRECTLY FROM SC UI
 ~out = { 0.5* FreeVerb.ar(DCompressor.ar([~left_mix, ~right_mix], ratio: 5), room: ~reverb_size, damp: ~reverb_damp, mix: ~reverb_mix) };
 
 ~out.play;
-
-~test = { ~sck_adc_49_1_osc + ~gene_no2_osc }
-~test.pause
 
 
