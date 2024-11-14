@@ -16,7 +16,7 @@ q = ();
     [3, 4]
   ];
 
-  q.harmony_transition_probabilities = [
+  q.harmony_transition_probabilities_high_threshold = [
     [0.3, 0.1, 0.1, 0.2, 0.3],
     [0.6, 0.4],
     [0.6, 0.4],
@@ -25,19 +25,14 @@ q = ();
     [0.5, 0.5]
   ];
 
-  q.harmony_transition_markov = MarkovSet(
-    [
-      [0, q.harmony_transition_edges[0], q.harmony_transition_probabilities[0]],
-      [1, q.harmony_transition_edges[1], q.harmony_transition_probabilities[1]],
-      [2, q.harmony_transition_edges[2], q.harmony_transition_probabilities[2]],
-      [3, q.harmony_transition_edges[3], q.harmony_transition_probabilities[3]],
-      [4, q.harmony_transition_edges[4], q.harmony_transition_probabilities[4]],
-      [5, q.harmony_transition_edges[5], q.harmony_transition_probabilities[5]]
-    ]
-  );
-
-  q.harmony_transition_markov.seeds = [0];
-  q.harmony_transition_stream = q.harmony_transition_markov.asStream;
+  q.harmony_transition_probabilities_low_threshold = [
+    [0.3, 0.05, 0.2, 0.3, 0.15],
+    [0.7, 0.3],
+    [0.4, 0.6],
+    [0.3, 0.2, 0.3, 0.2],
+    [0.2, 0.2, 0.6],
+    [0.7, 0.3]
+  ];
 
   q.pm_1_notes  = ["A4", "E5", "A4", "B4", "A4", "E5"].collect { |n| Note(n).freq };
   q.pm_25_notes = ["F4", "G4", "F4", "G4", "G4", "G4"].collect { |n| Note(n).freq };
@@ -50,6 +45,7 @@ q = ();
   q.bass_notes = ["D1", "E1", "F1", "G1", "A1", "G1"].collect { |n| Note(n).freq };
 
   q.harmony_transition_base_time = 10;
+  q.harmony_current_state = Bus.control(s, 1);
 
   q.countryside_ambience = Buffer.read(s, "samples/countryside_ambience.wav".asAbsolutePath);
   q.refinery_ambience = Buffer.read(s, "samples/refinery_ambience.wav".asAbsolutePath);
@@ -131,6 +127,8 @@ q = ();
 (
   ~user_threshold = { \input.kr };
   ~user_threshold.set(\input, q.user_threshold.asMap);
+  ~harmony_current_state = { \input.kr };
+  ~harmony_current_state.set(\input, q.harmony_current_state.asMap);
   ~light = { \input.kr };
   ~light.set(\input, q.light.asMap);
   ~sck_pm_1 = { \input.kr };
@@ -167,12 +165,22 @@ q = ();
 
 "Setting up harmony movement".postln;
 
-~harmony_current_state = { \state.kr(0) };
 
 (t = Task.new({
   loop({
-    var state = q.harmony_transition_stream.next;
-    ~harmony_current_state.set(\state, state);
+    var state = q.harmony_current_state.getSynchronous;
+    var harmony_transition_markov = MarkovSet(
+      [
+        [0, q.harmony_transition_edges[0], ((1 - q.user_threshold.getSynchronous) * q.harmony_transition_low_probabilities[0]) + (q.user_threshold.getSynchronous * q.harmony_transition_high_probabilities[0])],
+        [1, q.harmony_transition_edges[1], ((1 - q.user_threshold.getSynchronous) * q.harmony_transition_low_probabilities[1]) + (q.user_threshold.getSynchronous * q.harmony_transition_high_probabilities[1])],
+        [2, q.harmony_transition_edges[2], ((1 - q.user_threshold.getSynchronous) * q.harmony_transition_low_probabilities[2]) + (q.user_threshold.getSynchronous * q.harmony_transition_high_probabilities[2])],
+        [3, q.harmony_transition_edges[3], ((1 - q.user_threshold.getSynchronous) * q.harmony_transition_low_probabilities[3]) + (q.user_threshold.getSynchronous * q.harmony_transition_high_probabilities[3])],
+        [4, q.harmony_transition_edges[4], ((1 - q.user_threshold.getSynchronous) * q.harmony_transition_low_probabilities[4]) + (q.user_threshold.getSynchronous * q.harmony_transition_high_probabilities[4])],
+        [5, q.harmony_transition_edges[5], ((1 - q.user_threshold.getSynchronous) * q.harmony_transition_low_probabilities[5]) + (q.user_threshold.getSynchronous * q.harmony_transition_high_probabilities[5])]
+      ]
+    );
+    state = harmony_transition_markov.get(state);
+    q.harmony_current_state.set(state);
     (q.harmony_transition_base_time * ((1 +(q.light.getSynchronous/15000)*1.0))).wait;
   });
 });
