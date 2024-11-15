@@ -71,7 +71,9 @@ q = ();
 (
 
   OSCdef(\user_threshold, { |msg|
-    q.user_threshold.set(msg[1]);
+    var scaled = 1 - (msg[1] / 255.0);
+    q.user_threshold.set(scaled);
+    scaled.postln;
   }, "/nubes/user_threshold");
 
   OSCdef(\light, { |msg|
@@ -101,7 +103,6 @@ q = ();
 
   OSCdef(\gene_pm_1, { |msg|
     q.gene_pm_1.set(msg[1]);
-    ~gene_pm_1 = msg[1];
   }, "/gene/pm1");
 
   OSCdef(\gene_pm_25, { |msg|
@@ -248,7 +249,7 @@ s.sync; // WILL ERROR WHEN RUNNING DIRECTLY FROM SC UI
   var clicks = Saw.ar(LinLin.kr(~sck_adc_49_1, 0.0, 1.0, 0.2, 10.0));
   var lfo = LFTri.ar(1/25.0, iphase: 1).range(0, 1);
   SinOsc.ar(pitch + SinOsc.kr(fmPitch, mul: fmAmt)) * amp * clicks * lfo;
-})
+});
 
 (~gene_no2_osc = {
   var pitch = Select.kr(~harmony_current_state, q.gene_no2_notes);
@@ -258,7 +259,7 @@ s.sync; // WILL ERROR WHEN RUNNING DIRECTLY FROM SC UI
   var clicks = Saw.ar(LinLin.kr(~gene_no2, 0.0, 13.0, 0.1, 7.0));
   var lfo = LFTri.ar(1/30.0).range(0, 1);
   SinOsc.ar(pitch + SinOsc.kr(fmPitch, mul: fmAmt)) * amp * clicks * lfo;
-})
+});
 
 "Setting up sample players".postln;
 
