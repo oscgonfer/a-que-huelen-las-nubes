@@ -171,12 +171,12 @@ q = ();
     var state = q.harmony_current_state.getSynchronous;
     var harmony_transition_markov = MarkovSet(
       [
-        [0, q.harmony_transition_edges[0], ((1 - q.user_threshold.getSynchronous) * q.harmony_transition_low_probabilities[0]) + (q.user_threshold.getSynchronous * q.harmony_transition_high_probabilities[0])],
-        [1, q.harmony_transition_edges[1], ((1 - q.user_threshold.getSynchronous) * q.harmony_transition_low_probabilities[1]) + (q.user_threshold.getSynchronous * q.harmony_transition_high_probabilities[1])],
-        [2, q.harmony_transition_edges[2], ((1 - q.user_threshold.getSynchronous) * q.harmony_transition_low_probabilities[2]) + (q.user_threshold.getSynchronous * q.harmony_transition_high_probabilities[2])],
-        [3, q.harmony_transition_edges[3], ((1 - q.user_threshold.getSynchronous) * q.harmony_transition_low_probabilities[3]) + (q.user_threshold.getSynchronous * q.harmony_transition_high_probabilities[3])],
-        [4, q.harmony_transition_edges[4], ((1 - q.user_threshold.getSynchronous) * q.harmony_transition_low_probabilities[4]) + (q.user_threshold.getSynchronous * q.harmony_transition_high_probabilities[4])],
-        [5, q.harmony_transition_edges[5], ((1 - q.user_threshold.getSynchronous) * q.harmony_transition_low_probabilities[5]) + (q.user_threshold.getSynchronous * q.harmony_transition_high_probabilities[5])]
+        [0, q.harmony_transition_edges[0], ((1 - q.user_threshold.getSynchronous) * q.harmony_transition_probabilities_low_threshold[0]) + (q.user_threshold.getSynchronous * q.harmony_transition_probabilities_high_threshold[0])],
+        [1, q.harmony_transition_edges[1], ((1 - q.user_threshold.getSynchronous) * q.harmony_transition_probabilities_low_threshold[1]) + (q.user_threshold.getSynchronous * q.harmony_transition_probabilities_high_threshold[1])],
+        [2, q.harmony_transition_edges[2], ((1 - q.user_threshold.getSynchronous) * q.harmony_transition_probabilities_low_threshold[2]) + (q.user_threshold.getSynchronous * q.harmony_transition_probabilities_high_threshold[2])],
+        [3, q.harmony_transition_edges[3], ((1 - q.user_threshold.getSynchronous) * q.harmony_transition_probabilities_low_threshold[3]) + (q.user_threshold.getSynchronous * q.harmony_transition_probabilities_high_threshold[3])],
+        [4, q.harmony_transition_edges[4], ((1 - q.user_threshold.getSynchronous) * q.harmony_transition_probabilities_low_threshold[4]) + (q.user_threshold.getSynchronous * q.harmony_transition_probabilities_high_threshold[4])],
+        [5, q.harmony_transition_edges[5], ((1 - q.user_threshold.getSynchronous) * q.harmony_transition_probabilities_low_threshold[5]) + (q.user_threshold.getSynchronous * q.harmony_transition_probabilities_high_threshold[5])]
       ]
     );
     state = harmony_transition_markov.get(state);
