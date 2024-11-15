@@ -6,8 +6,8 @@ import time
 import argparse
 from lib.config import *
 
-async def main(websockets_server_port, serial_port, baudrate):
-    server = Server(port=websockets_server_port)
+async def main(websockets_server_ip, websockets_server_port, serial_port, baudrate):
+    server = Server(ip=websockets_server_ip, port=websockets_server_port)
     serial = Serial(
         port=serial_port,
         baudrate=baudrate,
@@ -37,7 +37,7 @@ if __name__ == "__main__":
 
     while True:
         try:
-            asyncio.run(main(WEBSOCKETS_PORT, args.port, args.baudrate))
+            asyncio.run(main(WEBSOCKETS_IP, WEBSOCKETS_PORT, args.port, args.baudrate))
         except OSError:
             print("WARNING: Serial disconnected. Attempting to reconnect in 1 second...")
             time.sleep(1)

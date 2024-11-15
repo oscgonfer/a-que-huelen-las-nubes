@@ -1,12 +1,14 @@
 import websockets
 from websockets.server import WebSocketServerProtocol as Socket
+from websockets.asyncio.server import serve
 import asyncio
 
 
 class Server(object):
-    def __init__(self, port=8000):
+    def __init__(self, ip = 'localhost', port=8000):
         self.from_serial = asyncio.Queue()
         self.to_serial = asyncio.Queue()
+        self.ip = ip
         self.port = port
         self.connections = set()
 
@@ -30,9 +32,9 @@ class Server(object):
             listener.cancel()
 
     async def _serve(self):
-        async with websockets.server.serve(self._handler, "localhost", self.port):
-            print(f"Server started on port {self.port}.")
-            await asyncio.Future()
+        async with serve(self._handler, self.ip, self.port) as server:
+            print(f"Server started on {self.ip}:{self.port}.")
+            await server.serve_forever()
 
     async def start(self):
         asyncio.gather(self._serve(), self._transmit())

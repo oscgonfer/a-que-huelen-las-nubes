@@ -8,7 +8,7 @@ const TIMEOUT = 1000;
 var ws; // Global variable
 var connected = false;
 function connect() {
-  ws = new WebSocket("ws://localhost:8000");
+  ws = new WebSocket("ws://0.0.0.0:8000");
   ws.addEventListener("open", ev => {
     connected = true;
     console.log(`Connection opened: ${ev}`);
@@ -46,4 +46,3 @@ function sendFromForm(event) {
 }
 
 connect();
-form.addEventListener("submit", sendFromForm);
