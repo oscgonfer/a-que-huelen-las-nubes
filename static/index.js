@@ -8,11 +8,28 @@ const TIMEOUT = 1000;
 var ws; // Global variable
 var connected = false;
 
+function getValues(myDict, trigger) {
+  return myDict[((Object.keys(myDict)).filter(function(value){return value <= trigger;})).pop()]
+}
+
 window.addEventListener("load", (event) => {
   let date = new Date();
-  console.log(date.get);
-  console.log("page is fully loaded");
   $("#issue-date").text($('<div/>').text(`${daysInCatalan[date.getDay()]}, ${date.getUTCDate()} ${monthsInCatalan[date.getMonth()+1]}, ${date.getFullYear()}`).html());
+
+  // Texts
+  for (const [key, value] of Object.entries(definitions)) {
+    if (fadeOption) {
+      // Option with fade
+      $(`#${key}`).animate({
+        'opacity': fadeOpacityLow
+      }, fadeTransitionTime, function(){
+        $(this).html(getValues(value, 1)).animate({'opacity': 1}, fadeTransitionTime);
+      });
+    } else {
+      // Option with just change
+      $(`#${key}`).text($('<div/>').text(getValues(value, 1)).html());
+    }
+  }
 });
 
 function connect() {
@@ -44,27 +61,24 @@ function connect() {
         return from =>  (from - fromRange[0]) * d + toRange[0];
       };
 
-    function getValues(myDict, trigger) {
-      return myDict[((Object.keys(myDict)).filter(function(value){return value <= trigger;})).pop()]
-    }
-
     // Main-article-img
     let gs = scale([0, 255], [0, 100])(potValue);
     $('#main-article-img').css('filter', `grayscale(${gs}%)`);
 
     // Texts
     for (const [key, value] of Object.entries(definitions)) {
-      console.log(key, getValues(value, potValue));
 
-      // Option with just change
-      // $(`#${key}`).text($('<div/>').text(getValues(value, potValue)).html());
-
+      if (fadeOption) {
       // Option with fade
-      $(`#${key}`).animate({
-        'opacity' : 0, 'filter': "blur(20px)"
-      }, 500, function(){
-        $(this).html(getValues(value, potValue)).animate({'opacity': 1, 'filter': "blur(0px)"}, 500);});
-
+        $(`#${key}`).animate({
+          'opacity': fadeOpacityLow
+        }, fadeTransitionTime, function(){
+          $(this).html(getValues(value, potValue)).animate({'opacity': 1}, fadeTransitionTime);
+        });
+      } else {
+        // Option with just change
+        $(`#${key}`).text($('<div/>').text(getValues(value, potValue)).html());
+      }
     }
   });
 }
