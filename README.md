@@ -10,7 +10,7 @@ Serve the serial stuff over websockets (and optionally over OSC):
 
 ```python ws.py --port /dev/ttyACM0```
 
-Replace `<port>` with the serial port for the arduino. The port should be something like `/dev/ttyACM0`
+Replace `<port>` with the serial port for the arduino. The port should be something like `/dev/ttyACM0`. If you want an interactive shell, you can use the `DEMO` option in `--port`.
 
 In `config.py` you can change some parameters, for instance the OSC server IP, port and topic, as well as the websockets server and port, and the serial port timeout.
 
@@ -26,6 +26,27 @@ To serve the page, run the app with:
 python main.py
 ```
 
+It's a simple flask app that deploys the content in `static`.
+
+## Run as job on boot
+
+Make a crontab job:
+
+```
+crontab -e
+```
+
+```
+@reboot cd $HOME/a-que-huelen-las-nubes/ && source venv/bin/acticate && python main.py
+@reboot cd $HOME/a-que-huelen-las-nubes/ && source venv/bin/acticate && python ws.py
+```
+
+Enable `cron.service`:
+
+```
+sudo systemctl enable cron.service
+```
+
 ### Arduino side
 
 Simply plug-in the arduino to the computer. With the code provided in `hardware`, it will send some random messages as an example.
@@ -34,4 +55,4 @@ Simply plug-in the arduino to the computer. With the code provided in `hardware`
 
 Main code based on: https://github.com/Project-Liquid/websockets-serial
 
-Code for rendering a fake newspaper, taken from this codepel example: https://www.codepel.com/html-css/css-newspaper-layout-template/
+Code for rendering a fake newspaper, taken and adapted from this codepel example: https://www.codepel.com/html-css/css-newspaper-layout-template/
