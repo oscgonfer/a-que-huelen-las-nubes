@@ -237,7 +237,7 @@
 
   img {
     width: 100%;
-    filter: grayscale(95%);
+    /* filter: grayscale(95%); */
     margin-bottom: 0.5rem;
     border: 1px solid var(--black);
     transition: 0.3s ease;
@@ -357,6 +357,8 @@
     color: var(--gray);
     padding: 0.8rem 0.8rem 0.9rem;
     transition: 0.2s ease;
+    position: relative;
+    z-index: 2
   }
 
   @media (min-width: 700px) and (max-width: 1024px) {
@@ -379,6 +381,7 @@
     width: 250%;
     left: -70%;
     bottom: -35%;
+    z-index: 0;
   }
 
   @media (min-width: 700px) and (max-width: 1024px) {
@@ -396,6 +399,7 @@
     font-size: 22px;
     line-height: 0.9;
     transform: rotate(-5deg);
+    z-index: 1;
   }
 
   .terrarium {

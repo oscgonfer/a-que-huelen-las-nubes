@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
   <script src="/static/index.js"></script>
+  <script src="/static/definitions.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital@0;1&family=Playfair+Display+SC:wght@900&family=Playfair+Display:ital,wght@0,800;1,800&family=Manrope:wght@800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
   <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.min.css'>
@@ -18,90 +19,71 @@
   <div class="main__wrapper">
     <main>
 
-      <h1 id="newspaper-title">The Tarragona Times</h1>
+      <h1 id="newspaper-title">Nou Tarragona</h1>
       <aside>
         <div>
-          <div class="issue">Issue #1 </div>
-          <div class="date">Tuesday, 18 October, 2024</div>
+          <div class="issue">Núm. 1</div>
+          <div id="issue-date" class="date"></div>
           <div class="edition">Convent Edition</div>
         </div>
       </aside>
 
-      <h2 class="title--large main-title" id="main-article-title">Un hombre respira mucho aire y se muere</h2>
+      <h2 class="title--large main-title" id="main-article-title"></h2>
       <div class="main-text" id="main-article-text-left">
-        <p>Un hombre de Tarragona ha respirado demasiado aire puro y ha fallecido. El hombre, de edad mediana, ha respirado <em id="contaminacion">23</em> litros de aire. Su familia, en comentarios a este periódico lamentaban la noticia: "La verdad es que no esperábamos que esto pudiera pasar. <em> El aire es realmente muy limpio en Tarragona </em>. El hombre ha sido transladado al tanatorio de San Petrolino, donde la capilla ardiente estará hasta el próximo Sábado
+        <p>
         </p>
       </div>
 
       <figure id="main-figure">
-        <img id="main-article-img" src="https://1.bp.blogspot.com/-1JZ9dpjaYJs/XkKtP96oJCI/AAAAAAAAWeM/JpW0D3F_5Agt_3p7PIfCJl4sqfqF4G6-gCLcBGAsYHQ/s1600/Tarragona%2BForo%2Bde%2Bla%2BColonia.jpg"/>
-        <figcaption id="main-article-fig-caption">Lugar donde se encontró al hombre fallecido por aire demasiado puro</figcaption>
+        <img id="main-article-img" src="/static/assets/img-main.jpg"/>
+        <figcaption id="main-article-fig-caption"></figcaption>
       </figure>
 
-      <div class="main-text multi-column" id="main-article-text-bottom">
-        <p>Un hombre de Tarragona ha respirado demasiado aire puro y ha fallecido. El hombre, de edad mediana, ha respirado <em id="contaminacion"></em> litros de aire. Su familia, en comentarios a este periódico lamentaban la noticia: "La verdad es que no esperábamos que esto pudiera pasar. <em> El aire es realmente muy limpio en Tarragona </em>. El hombre ha sido transladado al tanatorio de San Petrolino, donde la capilla ardiente estará hasta el próximo Sábado</p>
+      <div class="main-text multi-column-3" id="main-article-text-bottom">
+        <p></p>
       </div>
 
       <div class="item-with-image plan span--2 long--2" id="article-2-1">
-        <img id="article-2-1-img" src="https://files.soniccdn.com/images/articles/original/43114.jpg"/>
-        <h4 id="article-2-1-title">¿Sin planes para el fin de semana?</h4>
+        <img id="article-2-1-img" src="/static/assets/img-2-1.jpg"/>
+        <h4 id="article-2-1-title"></h4>
         <div class="multi-column">
-          <p id="article-2-1-text">¡No te pierdas el evento del año organizado por la Petroquímica de Tarragona! El Concierto de la mascarilla tendrá lugar en la Plaza de la Vila, donde se espera que miles de personas disfruten de conciertos con aire re-limpio y con buena música!</p>
+          <p id="article-2-1-text"></p>
         </div>
       </div>
 
       <div class="hogwarts" id="add-2-2">
-        <div class="hogwarts__title" id="add-2-2-title">50% Descuento en tickets para concierto</div>
+        <div class="hogwarts__title" id="add-2-2-title">Nou perfum</div>
         <div class="hogwarts__image">
           <span>Oferta tiempo limitado!</span>
-          <!-- TODO Update -->
-          <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/567707/showcase-hogwarts.svg"/>
+          <img src="/static/assets/img-add.jpg"/>
         </div>
       </div>
 
       <div class="item-with-image pasta with-border" id="article-2-3">
-        <h4 id="article-2-3-title">Rodalies en obras</h4>
-        <p id="article-2-3-text">
-          Un día más, el tren está en obras. ¡Una pena de noticia! Seguramente mañana será igual.
-        </p>
+        <h4 id="article-2-3-title"></h4>
+        <p id="article-2-3-text"></p>
       </div>
 
-      <div class="item-with-image magazine with-border" id="article-2-4">
-        <h4 id="article-2-4-title">Maravillas escondidas</h4>
-        <p id="article-2-4-text">
-          Un tributo a las maravillas de Tarragona, escondidas bajo la contaminación de la ciudad. ¡No te lo pierdas!
-        </p>
-      </div>
+      <!-- <div class="item-with-image magazine with-border" id="article-2-4">
+        <h4 id="article-2-4-title"></h4>
+        <p id="article-2-4-text"></p>
+      </div> -->
 
       <div class="item-with-image style" id="article-3-1">
-        <h4 id="article-3-1-title">Let's adopt, don't shop.</h4>
-        <p id="article-3-1-text">
-          Explore a style guide and various page layouts for a pet adoption site in the collection. Inspired by the Atomic Design principle, this 8-pen collection includes a 404 page concept, an admin dashboard and what a Twitter user calls a 'media card zen garden'. Each pen comes with five (yes, five) color themes, including the  precious dark mode. Eight playful toggles to toggle on and off for your amusement. Is it possible to use these on your site and still adhere to assessibility rules? No. But there's a really cute dog one you <em>have</em>to see. Eight playful toggles to toggle on and off for your amusement. Is it possible to use these on your site and still adhere to assessibility rules? No. But there's a really cute dog one you <em>have</em>to see. Eight playful toggles to toggle on and off for your amusement. Is it possible to use these on your site and still adhere to assessibility rules? No. But there's a really cute dog one you <em>have</em>to see. Eight playful toggles to toggle on and off for your amusement.
-        </p>
+        <h4 id="article-3-1-title"></h4>
+        <p id="article-3-1-text"></p>
       </div>
 
       <div class="item-with-image toggles" id="article-3-2">
-        <img id="article-3-2-img" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/567707/showcase-toggle.gif"/>
-        <h4 id="article-3-2-title">Toggles</h4>
-        <p id="article-3-2-text" >Eight playful toggles to toggle on and off for your amusement. Is it possible to use these on your site and still adhere to assessibility rules? No. But there's a really cute dog one you <em>have</em>to see. Eight playful toggles to toggle on and off for your amusement. Is it possible to use these on your site and still adhere to assessibility rules? No. But there's a really cute dog one you <em>have</em>to see. </p>
-      </div>
+        <img id="article-3-2-img" src="/static/assets/img-3-2.png"/>
+        <h4 id="article-3-2-title"></h4>
+        <p id="article-3-2-text" ></div>
 
       <div class="sidebar">
-        <h3 class="title--big" id="side-bar-1-title">Sacadito del horno</h3>
-        <img class="pie__image" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/567707/showcase-pie.jpg" id="side-bar-1-img"/>
-          <div class="pie__subtitle" id="side-bar-1-subtitle">Aire </div>
+        <h3 class="title--big" id="opinion-1-1-title"></h3>
+          <div class="pie__subtitle" id="opinion-1-1-subtitle"></div>
           <div class="pie__content">
-            <h4 id="side-bar-1-subsubtitle">¡Mascarillas para todos!</h4>
-            <p id="side-bar-1-text">!No te quedes sin la tuya! Aunque el aire esté re-limpio, siempre está bien ponérsela.</p>
-          </div>
-
-          <div class="sidebar-article" id="side-bar-2">
-            <h5 id="side-bar-2-title">Un desarrollador aburrido se pone a programar</h5>
-            <p id="side-bar-2-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas venenatis volutpat vehicula. Sed molestie urna vitae tellus commodo pretium. Donec posuere auctor tellus eu posuere. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed eget sem lobortis mi sollicitudin fringilla eget vestibulum nisl. Mauris eget est ac eros tincidunt commodo. Fusce tincidunt sed dui vel hendrerit. Aenean elementum, tellus at bibendum consequat, nibh ligula commodo massa, in posuere turpis dui egestas ipsum. Curabitur ex augue, efficitur ut arcu eget, eleifend viverra nisl. Duis non iaculis sem. </p>
-          </div>
-          <div class="sidebar-article" id="side-bar-3">
-            <h5 id="side-bar-3-title">Un desarrollador aburrido se pone a programar</h5>
-            <p id="side-bar-3-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas venenatis volutpat vehicula. Sed molestie urna vitae tellus commodo pretium. Donec posuere auctor tellus eu posuere. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed eget sem lobortis mi sollicitudin fringilla eget vestibulum nisl. Mauris eget est ac eros tincidunt commodo. Fusce tincidunt sed dui vel hendrerit. Aenean elementum, tellus at bibendum consequat, nibh ligula commodo massa, in posuere turpis dui egestas ipsum. Curabitur ex augue, efficitur ut arcu eget, eleifend viverra nisl. Duis non iaculis sem. </p>
+            <p id="opinion-1-1-text"></p>
           </div>
       </div>
     </main>
