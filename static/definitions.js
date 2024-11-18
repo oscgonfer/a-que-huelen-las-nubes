@@ -1,6 +1,6 @@
 
 let mainArticleTitle = {
-    0: "La nova gamma cromàtica dels cels tarragonins fascina als locals",
+    0: "La nova gamma cromàtica dels cels tarragonins fascina als locals i porta cada vegada més fotògrafs a la zona",
     100: "El govern tarragoní promourà ajuts per la millora dels aillaments de finestres per als residents al Camp",
     200: "Els nivells de contaminació de l'aire del Tarragonès mobilitza a les entitats locals i el teixit associatiu",
 }
@@ -8,13 +8,13 @@ let mainArticleTitle = {
 let mainArticleTextLeft = {
     0: "La petita però intensa indústria petroquímica de Tarragona porta dècades contribuint a la “riquesa visual“ dels cels locals, amb tonalitats canviants que s’ajusten gairebé en directe a les emissions de cada jornada. Des de vermells vius a grisos profunds, els cels de Tarragona ofereixen un espectacle atmosfèric que ja ha despertat l’interès de fotògrafs i visitants d’arreu. Per a molts responsables locals, aquesta paleta inèdita de colors no només enriqueix la imatge de la ciutat, sinó que pot esdevenir una nova forma de turisme: el “turisme cromàtic”, on la gent viatja per gaudir de l’impacte visual del seu horitzó.",
     100: "La intensa activitat de la indústria petroquímica de Tarragona fa dècades que transforma l’atmosfera local en un laboratori a cel obert, on cada emissió química deixa una empremta tangible en forma de colors vibrants i capes de boira. Els cels canviants, que van des dels taronges resplendents fins als grisos opacs, han esdevingut gairebé un símbol de la ciutat. Però, sota aquesta façana aparentment pintoresca, s’amaga una realitat més inquietant: els contaminants que generen aquest espectacle també es filtren a l’aire que respirem.",
-    200: "La indústria petroquímica de Tarragona no només transforma l’horitzó en un mosaic de colors impactants, sinó que també omple l’aire d’una barreja invisible però alarmant de contaminants. Cada emissió química es reflecteix en tonalitats que van des de taronges brillants fins a grisos densos, però aquests cels no són només una curiositat atmosfèrica. Són un testimoni silenciós d’una càrrega tòxica que afecta directament la salut de la població.",
+    200: "La indústria petroquímica de Tarragona no només transforma l’horitzó en un mosaic de colors impactants, sinó que també omple l’aire d’una barreja invisible però alarmant de contaminants. Cada emissió química es reflecteix en tonalitats que van des de taronges brillants fins a grisos densos, però aquests cels no són només una curiositat atmosfèrica. Són un testimoni silenciós d’una càrrega tòxica que afecta directament la salut de la població: els experts alerten que darrere d’aquest espectacle visual s’oculta una realitat inquietant.",
 }
 
 let mainArticleTextBottom = {
     0: "Tot i l’entusiasme d’alguns promotors, els experts en salut ambiental apunten amb una certa prudència que les lluentors nocturnes, a més de decorar el cel, podrien tenir impactes invisibles sobre la salut. La ciutat, segons aquests professionals, hauria de considerar els “efectes secundaris” de la seva nova icona turística, una bellesa que potser amaga conseqüències a llarg termini.",
     100: "Per als experts en medi ambient, aquesta “postal” no és només una peculiaritat visual, sinó una alerta silenciosa. Les partícules microscòpiques i els compostos químics associats a aquests fenòmens poden tenir repercussions greus i acumulatives sobre la salut pública. Lluny de ser una icona per presumir, els cels de Tarragona són un reflex d’una contaminació que, si no es controla, podria deixar una empremta molt més duradora i nociva del que els ulls poden percebre.",
-    200: "Els experts alerten que darrere d’aquest espectacle visual s’oculta una realitat inquietant: els nivells creixents de partícules fines i compostos químics estan associats a malalties respiratòries, cardiovasculars i fins i tot al desenvolupament de certs tipus de càncer. Lluny de ser una “icona” o un reclam turístic, els cels de Tarragona són un avís clar i urgent del cost real d’aquesta contaminació, un problema que no es pot ignorar sense posar en risc el benestar i el futur de la ciutat.",
+    200: "Els nivells creixents de partícules fines i compostos químics estan associats a malalties respiratòries, cardiovasculars i fins i tot al desenvolupament de certs tipus de càncer. Lluny de ser una “icona” o un reclam turístic, els cels de Tarragona són un avís clar i urgent del cost real d’aquesta contaminació, un problema que no es pot ignorar sense posar en risc el benestar de la població i el futur de la ciutat.",
 }
 
 let mainArticleFigCaption = {
