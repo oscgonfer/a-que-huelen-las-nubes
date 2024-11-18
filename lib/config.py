@@ -1,6 +1,6 @@
-OSC_TOPIC = "hello"
-OSC_IP = "127.0.0.1"
-OSC_PORT = 5000
+OSC_TOPIC = "/nubes/user_threshold"
+OSC_IP = "192.168.1.1"
+OSC_PORT = 57120
 
 WEBSOCKETS_IP = "0.0.0.0"
 WEBSOCKETS_PORT = 8000

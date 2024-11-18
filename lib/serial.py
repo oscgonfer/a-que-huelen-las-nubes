@@ -28,14 +28,14 @@ class Serial(object):
             print('No OSC started')
             self.osc_client = None
         else:
+            print('Started OSC server')
             self.osc_client = udp_client.SimpleUDPClient(osc_server[0], osc_server[1])
             self.osc_topic = osc_server[2]
-            self.osc_client.send_message(self.osc_topic, "hello")
 
     def _readline_blocking(self) -> str:
         while self.serial.in_waiting == 0:
             time.sleep(self.timeout)
-        return self.serial.readline().decode("utf-8").strip("\r\n")
+        return self.serial.readline().decode().strip("\r\n")
 
     async def listen(self):
         while True:
@@ -44,7 +44,7 @@ class Serial(object):
             await self.from_serial.put(message)
 
             if self.osc_client is not None:
-                self.osc_client.send_message(self.osc_topic, message+"\n")
+               self.osc_client.send_message(self.osc_topic, float(message))
 
             if self.recording:
                 self.recorded_data.append(message)
