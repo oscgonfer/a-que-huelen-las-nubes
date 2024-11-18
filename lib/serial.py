@@ -9,7 +9,8 @@ from pythonosc import udp_client
 class Serial(object):
     def __init__(self, port, baudrate,
         to_serial: asyncio.Queue, from_serial: asyncio.Queue,
-        timeout=0.001, osc_server= (None, None, None)):
+        timeout=0.001, osc_server= (None, None, None),
+        invert=True, threshold=255):
         # Queues for communicating with server
         self.to_serial = to_serial
         self.from_serial = from_serial
@@ -18,6 +19,8 @@ class Serial(object):
         self.recorded_data = []  # holds buffered data between file writes
         self.recording_buffer_size = 30  # lines per file write
         self.filename = "REC_nodate.txt"
+        self.invert = invert
+        self.threshold = threshold
         if port == "DEMO":
             self.serial = Demo()
         else:
@@ -41,10 +44,14 @@ class Serial(object):
         while True:
             message = await asyncio.get_event_loop().run_in_executor(None, self._readline_blocking)
             print(f"Serial message: {message}")
-            await self.from_serial.put(message)
+            _msg = message
+            if self.invert:
+                _msg = self.threshold - float(message)
+                print (f"Message inverted: {_msg}")
+            await self.from_serial.put(str(_msg))
 
             if self.osc_client is not None:
-               self.osc_client.send_message(self.osc_topic, float(message))
+               self.osc_client.send_message(self.osc_topic, float(_msg))
 
             if self.recording:
                 self.recorded_data.append(message)
