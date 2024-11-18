@@ -1,5 +1,5 @@
 OSC_TOPIC = "/nubes/user_threshold"
-OSC_IP = "192.168.1.1"
+OSC_IP = "nubes-audio.local"
 OSC_PORT = 57120
 
 WEBSOCKETS_IP = "0.0.0.0"
