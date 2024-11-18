@@ -18,10 +18,11 @@
     font-family: var(--font);
     color: var(--black);
     background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/567707/paper_fibers.png) repeat;
-    padding: 4rem 2rem;
+    padding: 3rem 2rem;
     line-height: 1.3;
     text-align: justify;
     column-break-inside: avoid;
+    overflow-y: hidden;
   }
 
   a {

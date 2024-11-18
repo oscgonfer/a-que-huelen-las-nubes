@@ -1,13 +1,13 @@
 
 let mainArticleTitle = {
-    0: "La nova gamma cromàtica dels cels tarragonins fascina als locals i porta cada vegada més fotògrafs a la zona",
-    100: "El govern tarragoní promourà ajuts per la millora dels aillaments de finestres per als residents al Camp",
-    200: "Els nivells de contaminació de l'aire del Tarragonès mobilitza a les entitats locals i el teixit associatiu",
+    0: "La nova gamma cromàtica dels cels tarragonins fascina als locals",
+    100: "El ajutament promourà ajuts per els aillaments de finestres per els residents",
+    200: "La contaminació de l'aire del Tarragonès mobilitza a les entitats locals",
 }
 
 let mainArticleTextLeft = {
     0: "La petita però intensa indústria petroquímica de Tarragona porta dècades contribuint a la “riquesa visual“ dels cels locals, amb tonalitats canviants que s’ajusten gairebé en directe a les emissions de cada jornada. Des de vermells vius a grisos profunds, els cels de Tarragona ofereixen un espectacle atmosfèric que ja ha despertat l’interès de fotògrafs i visitants d’arreu. Per a molts responsables locals, aquesta paleta inèdita de colors no només enriqueix la imatge de la ciutat, sinó que pot esdevenir una nova forma de turisme: el “turisme cromàtic”, on la gent viatja per gaudir de l’impacte visual del seu horitzó.",
-    100: "La intensa activitat de la indústria petroquímica de Tarragona fa dècades que transforma l’atmosfera local en un laboratori a cel obert, on cada emissió química deixa una empremta tangible en forma de colors vibrants i capes de boira. Els cels canviants, que van des dels taronges resplendents fins als grisos opacs, han esdevingut gairebé un símbol de la ciutat. Però, sota aquesta façana aparentment pintoresca, s’amaga una realitat més inquietant: els contaminants que generen aquest espectacle també es filtren a l’aire que respirem.",
+    100: "La intensa activitat de la indústria petroquímica de Tarragona fa dècades que transforma l’atmosfera local en un laboratori a cel obert, on cada emissió química deixa una empremta tangible en forma de colors vibrants i capes de boira. Els cels canviants, que van des dels taronges resplendents fins als grisos opacs, han esdevingut gairebé un símbol de la ciutat. Però, sota aquesta façana aparentment pintoresca, s’amaga una realitat més inquietant: els contaminants que generen aquest espectacle també es filtren a l’aire que respirem en les zones més poblades de la comarca.",
     200: "La indústria petroquímica de Tarragona no només transforma l’horitzó en un mosaic de colors impactants, sinó que també omple l’aire d’una barreja invisible però alarmant de contaminants. Cada emissió química es reflecteix en tonalitats que van des de taronges brillants fins a grisos densos, però aquests cels no són només una curiositat atmosfèrica. Són un testimoni silenciós d’una càrrega tòxica que afecta directament la salut de la població: els experts alerten que darrere d’aquest espectacle visual s’oculta una realitat inquietant.",
 }
 
@@ -65,9 +65,9 @@ let article23Text = {
 // }
 
 let article31Title = {
-    0: "L’olor de 'muntanya' al polígon: la indústria aposta per noves aromes en l’aire.",
-    95: "L'olor del polígon: la indústria ven la idea d'“unes noves aromes“ a l'aire, un concepte que alguns veïns estan disposats a tastar.",
-    195: "“Volem l'olor de la muntanya, no del polígon!”: els veïns protesten per la qualitat de l'aire i aposten per un futur més verd."
+    0: "L’olor de 'muntanya' al polígon: la indústria aposta per noves aromes en l’aire",
+    95: "L'olor del polígon: la indústria ven la idea d'“unes noves aromes“ a l'aire, un concepte que alguns veïns estan disposats a tastar",
+    195: "“Volem l'olor de la muntanya, no del polígon!”: els veïns protesten per la qualitat de l'aire i aposten per un futur més verd"
 }
 
 let article31Text = {
