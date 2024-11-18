@@ -85,8 +85,8 @@ let article31Text = {
 let article32Title = {
     0: "Gran èxit en el concurs de dibuix escolar: 'Els Colors de la Xemeneia'",
     100: "Gran èxit en el concurs de dibuix escolar: 'Els Colors del Bosc'",
-    150: "Gran èxit en el concurs de dibuix escolar: 'Els Colors de la Nostra Ciutat’",
-    200: "Gran èxit en el concurs de dibuix escolar: 'Els Futurs de la Nostra Ciutat'"
+    150: "Gran èxit en el concurs de dibuix escolar: 'Els Colors de la Ciutat’",
+    200: "Gran èxit en el concurs de dibuix escolar: 'Els Futurs de la Ciutat'"
 }
 
 let article32Text = {
